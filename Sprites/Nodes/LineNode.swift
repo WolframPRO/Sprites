@@ -9,6 +9,9 @@
 import SpriteKit
 
 class LineNode: SKShapeNode {
+    
+    public var parentNode: CompodeNode?
+    
     public var startSelected = false
     public var start: CGPoint {
         didSet {
@@ -25,6 +28,16 @@ class LineNode: SKShapeNode {
     func deselectPoint() {
         self.startSelected = false
         self.endSelected = false
+    }
+    
+    func panForTranslation(_ translation: CGPoint) {
+        guard let curpath = self.path else { return }
+        let points = curpath.getPathElementsPoints()
+
+        let firstCoord = points[0].plus(translation)
+        let lastCoord = points[1].plus(translation)
+        
+        setLine(start: firstCoord, end: lastCoord)
     }
     
     func arountEqualToExtremePoints(point: CGPoint) -> CGPoint? {

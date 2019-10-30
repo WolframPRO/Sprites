@@ -9,11 +9,23 @@
 import SpriteKit
 import GameplayKit
 
+protocol TranslationNodeProtocol: SKNode {
+    func panForTranslation(_ translation: CGPoint)
+}
 
 class GameScene: SKScene {
     
-	var selectedNode: LineNode?
-	
+	var selectedNode: TranslationNodeProtocol?
+    var axisNode = AxisNode()
+    
+    func setAxis(hidden: Bool) {
+        axisNode.isHidden = hidden
+    }
+    
+    func afterInit() {
+        self.addChild(axisNode)
+    }
+    
 	public func addLine() {
 		let line = LineNode(start: CGPoint(x: 0, y: -100), end: CGPoint(x: 0, y: 100))
 		self.addChild(line)
@@ -26,19 +38,6 @@ class GameScene: SKScene {
 		selectedNode!.removeFromParent()
 		return true
 	}
-    
-	func selectNodeForTouch(touchLocation : CGPoint) {
-		guard let touchedNode = self.atPoint(touchLocation) as? LineNode else {
-			return
-		}
-		
-		if let selectedNode = selectedNode {
-			selectedNode.strokeColor = .blue
-		}
-		
-		selectedNode = touchedNode
-		selectedNode!.strokeColor = .red
-	}
 	
     func move(for first: UITouch, and last: UITouch) {
 		guard let selectedNode = selectedNode else {
@@ -47,7 +46,9 @@ class GameScene: SKScene {
         let firstCoord = first.location(in: self)
         let lastCoord = last.location(in: self)
         
-        selectedNode.setLine(start: firstCoord, end: lastCoord)
+        if selectedNode is LineNode {
+            (selectedNode as! LineNode).setLine(start: firstCoord, end: lastCoord)
+        }
     }
         
     func move(for touch: UITouch) {
@@ -75,19 +76,8 @@ class GameScene: SKScene {
             guard self.atPoint(previousPosition) == selectedNode else { return }
             let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
                 
-            self.panForTranslation(translation)
+            selectedNode.panForTranslation(translation)
         }
-    }
-	
-    func panForTranslation(_ translation: CGPoint) {
-        guard let selectedNode = selectedNode,
-			  let curpath = selectedNode.path else { return }
-        let points = curpath.getPathElementsPoints()
-
-        let firstCoord = points[0].plus(translation)
-        let lastCoord = points[1].plus(translation)
-        
-        selectedNode.setLine(start: firstCoord, end: lastCoord)
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -97,6 +87,19 @@ class GameScene: SKScene {
                                         object: nil,
                                         userInfo: ["x": pos.x, "y": pos.y])
         NotificationCenter.default.post(notification)
+    }
+    
+    func selectNodeForTouch(touchLocation : CGPoint) {
+        guard let touchedNode = self.atPoint(touchLocation) as? LineNode else {
+            return
+        }
+        
+        if let selectedNode = selectedNode {
+            selectedNode.strokeColor = .blue
+        }
+        
+        selectedNode = touchedNode
+        selectedNode!.strokeColor = .red
     }
     
     func touchMoved(toPoint pos : CGPoint) {

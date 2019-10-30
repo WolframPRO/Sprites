@@ -31,6 +31,7 @@ class GameViewController: UIViewController {
 			sceneView.presentScene(scene)
 			sceneView.isMultipleTouchEnabled = true
 			self.scene = scene
+            self.scene.afterInit()
 		}
 		
 		sceneView.ignoresSiblingOrder = true
@@ -69,7 +70,12 @@ class GameViewController: UIViewController {
 	@IBAction func addAction(_ sender: Any) {
 		scene.addLine()
 	}
-	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    
+    @IBAction func axisButtonAction(_ sender: Any) {
+        scene.setAxis(hidden: !scene.axisNode.isHidden)
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown
         } else {

@@ -17,7 +17,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Nt-SM-MwA" customClass="SKView">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfw-TJ-TeB">
                                 <rect key="frame" x="609" y="15" width="400" height="250"/>
@@ -62,13 +62,22 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4WT-9G-ioo">
+                                                    <rect key="frame" x="8" y="8" width="89" height="30"/>
+                                                    <state key="normal" title="Координаты"/>
+                                                    <connections>
+                                                        <action selector="axisButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="C08-8i-obG"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jJv-6H-3qQ" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="8Zj-tA-ti3"/>
                                                 <constraint firstItem="g8j-DY-gKf" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="-2" id="9YV-XY-6d0"/>
                                                 <constraint firstItem="ftR-fc-QqM" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="EMm-c2-7h1"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="leading" secondItem="g8j-DY-gKf" secondAttribute="trailing" constant="8" id="L3k-wU-hkq"/>
+                                                <constraint firstItem="4WT-9G-ioo" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="TeS-tL-Q8B"/>
                                                 <constraint firstItem="ftR-fc-QqM" firstAttribute="top" secondItem="jJv-6H-3qQ" secondAttribute="bottom" constant="8" id="VMO-td-B2i"/>
+                                                <constraint firstItem="4WT-9G-ioo" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="8" id="WNL-HT-q3J"/>
                                                 <constraint firstAttribute="bottom" secondItem="ftR-fc-QqM" secondAttribute="bottom" constant="12" id="mXo-OE-xjx"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="-2" id="uIH-kG-Vvj"/>
                                                 <constraint firstAttribute="trailing" secondItem="cdl-8O-PFr" secondAttribute="trailing" constant="12" id="vLo-2C-230"/>
@@ -88,7 +97,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="8Nt-SM-MwA" firstAttribute="leading" secondItem="4qk-I5-YsI" secondAttribute="leading" id="0QZ-ZJ-pQT"/>
                             <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="8Nt-SM-MwA" secondAttribute="trailing" id="FbX-kf-Ycf"/>
