@@ -116,9 +116,41 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         
         let def = CustomMath.lineDefinition(between: start, and: end)
         let lineDef = "\(Int(def.A))x + \(Int(def.B))y + \(Int(def.C)) = 0"
-        let notification = Notification(name: Notification.Name(rawValue: "fx_line"),
-                                        object: nil,
-                                        userInfo: ["string":lineDef])
-        NotificationCenter.default.post(notification)
+        Radio.post(lineDef: lineDef)
+    }
+}
+
+///Выбор ноды
+extension LineNode {
+    func selectNode(oldSelected: TranslationNodeProtocol?) -> TranslationNodeProtocol {
+        oldSelected?.strokeColor = .blue
+        
+        let node = selectNodeWithoutColorize(oldSelected: oldSelected)
+        node.strokeColor = .red
+        
+        return node
+    }
+    
+    private func selectNodeWithoutColorize(oldSelected: TranslationNodeProtocol?) -> TranslationNodeProtocol {
+        if let parent = parentNode {
+            return parent.selectNode(oldSelected: oldSelected)
+        }
+        
+        guard State.isGroupState else {
+            return self
+        }
+        
+        switch oldSelected {
+        case let oldSelected as LineNode:
+            let compodeNode = CompodeNode()
+            compodeNode.add(node: oldSelected)
+            compodeNode.add(node: self)
+            return compodeNode
+        case let oldSelected as CompodeNode:
+            oldSelected.add(node: self)
+            return oldSelected
+        default:
+            return self
+        }
     }
 }

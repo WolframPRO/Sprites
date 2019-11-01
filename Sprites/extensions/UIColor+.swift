@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIColor {
-    func mix(_ alpha: CGFloat, over color: UIColor) -> UIColor {
+    func mix(_ alpha: CGFloat = 0.5, with color: UIColor) -> UIColor {
 
         let whiteComponents: [CGFloat] = [1.0, 1.0, 1.0, 1.0] //UIColor.white.cgColor.components only returns [1.0, 1.0]
 

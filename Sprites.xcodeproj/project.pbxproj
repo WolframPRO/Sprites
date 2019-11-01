@@ -12,6 +12,8 @@
 		98212C8823697AA800F84C8E /* AxisNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8723697AA800F84C8E /* AxisNode.swift */; };
 		98212C8A2369842300F84C8E /* CompositeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C892369842300F84C8E /* CompositeNode.swift */; };
 		983924BF236C424B00A266D0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983924BE236C424B00A266D0 /* UIColor+.swift */; };
+		983924C1236C9C7500A266D0 /* Radio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983924C0236C9C7500A266D0 /* Radio.swift */; };
+		983924C3236CA0AA00A266D0 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983924C2236CA0AA00A266D0 /* State.swift */; };
 		987D46CD23465B0800611643 /* CGPoint+Ariphmetic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CA23465B0800611643 /* CGPoint+Ariphmetic.swift */; };
 		987D46CE23465B0800611643 /* Scene+rad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CB23465B0800611643 /* Scene+rad.swift */; };
 		987D46CF23465B0800611643 /* CGPath+Points.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CC23465B0800611643 /* CGPath+Points.swift */; };
@@ -32,6 +34,8 @@
 		98212C8723697AA800F84C8E /* AxisNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisNode.swift; sourceTree = "<group>"; };
 		98212C892369842300F84C8E /* CompositeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeNode.swift; sourceTree = "<group>"; };
 		983924BE236C424B00A266D0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		983924C0236C9C7500A266D0 /* Radio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Radio.swift; sourceTree = "<group>"; };
+		983924C2236CA0AA00A266D0 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		987D46CA23465B0800611643 /* CGPoint+Ariphmetic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Ariphmetic.swift"; sourceTree = "<group>"; };
 		987D46CB23465B0800611643 /* Scene+rad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Scene+rad.swift"; sourceTree = "<group>"; };
 		987D46CC23465B0800611643 /* CGPath+Points.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+Points.swift"; sourceTree = "<group>"; };
@@ -68,6 +72,16 @@
 			path = Nodes;
 			sourceTree = "<group>";
 		};
+		983924C4236CA3A500A266D0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				98E664452345C01500E53820 /* AppDelegate.swift */,
+				98E664472345C01500E53820 /* GameScene.sks */,
+				98E664492345C01500E53820 /* Actions.sks */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		987D46C923465B0800611643 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +97,7 @@
 		98E664392345C01500E53820 = {
 			isa = PBXGroup;
 			children = (
+				983924C4236CA3A500A266D0 /* Supporting Files */,
 				98E664442345C01500E53820 /* Sprites */,
 				98E664432345C01500E53820 /* Products */,
 			);
@@ -100,10 +115,9 @@
 			isa = PBXGroup;
 			children = (
 				981D48A52345F4DA00F78A08 /* Sprites.entitlements */,
-				98E664452345C01500E53820 /* AppDelegate.swift */,
-				98E664472345C01500E53820 /* GameScene.sks */,
-				98E664492345C01500E53820 /* Actions.sks */,
 				98E6644B2345C01500E53820 /* GameScene.swift */,
+				983924C0236C9C7500A266D0 /* Radio.swift */,
+				983924C2236CA0AA00A266D0 /* State.swift */,
 				98212C8223694F7000F84C8E /* Nodes */,
 				98E6644D2345C01500E53820 /* GameViewController.swift */,
 				987D46C923465B0800611643 /* extensions */,
@@ -193,9 +207,11 @@
 				98212C8423694F8000F84C8E /* LineNode.swift in Sources */,
 				987D46CD23465B0800611643 /* CGPoint+Ariphmetic.swift in Sources */,
 				983924BF236C424B00A266D0 /* UIColor+.swift in Sources */,
+				983924C1236C9C7500A266D0 /* Radio.swift in Sources */,
 				98E6644C2345C01500E53820 /* GameScene.swift in Sources */,
 				98212C8A2369842300F84C8E /* CompositeNode.swift in Sources */,
 				98E6644E2345C01500E53820 /* GameViewController.swift in Sources */,
+				983924C3236CA0AA00A266D0 /* State.swift in Sources */,
 				987D46CF23465B0800611643 /* CGPath+Points.swift in Sources */,
 				98E664462345C01500E53820 /* AppDelegate.swift in Sources */,
 				987D46CE23465B0800611643 /* Scene+rad.swift in Sources */,

@@ -12,6 +12,11 @@ class CompodeNode: TranslationNodeProtocol {
     
     var nodes: [LineNode] = []
     
+    func selectNode(oldSelected: TranslationNodeProtocol?) -> TranslationNodeProtocol {
+        Radio.postNodeHaveParent()
+        return self
+    }
+    
     func add(node: LineNode) {
         weak var weakSelf = self
         node.parentNode = weakSelf
@@ -42,7 +47,7 @@ class CompodeNode: TranslationNodeProtocol {
     
     var strokeColor: UIColor = .blue {
         didSet {
-            _ = nodes.map { $0.strokeColor = self.strokeColor.mix(0.5, over: .green) }
+            _ = nodes.map { $0.strokeColor = self.strokeColor.mix(with: .green) }
         }
     }
 }

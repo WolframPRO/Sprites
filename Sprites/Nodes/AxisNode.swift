@@ -29,7 +29,7 @@ class AxisNode: SKShapeNode {
         path.addLine(to:  CGPoint(x: 1000, y: -1))
         
         for x in -1000..<1000 {
-            guard x % 20 == 0 else { continue }
+            guard x % 10 == 0 else { continue }
             path.addRect(CGRect(x: x, y: -2, width: 1, height: 2))
             path.addRect(CGRect(x: -2, y: x, width: 2, height: 1))
         }

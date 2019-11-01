@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-protocol TranslationNodeProtocol {
+protocol TranslationNodeProtocol: AnyObject {
     func move(for touch: UITouch, translation: CGPoint)
     var strokeColor: UIColor { get set }
     func removeFromParent()
@@ -17,24 +17,17 @@ protocol TranslationNodeProtocol {
 
 class GameScene: SKScene {
     
-    var isGroupEnabled = false
 	var selectedNode: TranslationNodeProtocol?
     var axisNode = AxisNode()
-    
-    func setAxis(hidden: Bool) {
-        axisNode.isHidden = hidden
-    }
-    
-    func afterInit() {
-        self.addChild(axisNode)
-    }
-    
+
 	public func addLine() {
-		let line = LineNode(start: CGPoint(x: 0, y: -100), end: CGPoint(x: 0, y: 100))
+        let start = CGPoint(x: Int.random(in: -100...100), y: Int.random(in: -100...100))
+        let end = CGPoint(x: Int.random(in: -100...100), y: Int.random(in: -100...100))
+		let line = LineNode(start: start, end: end)
 		self.addChild(line)
     }
 	
-	public func removeLine() -> Bool {
+	public func removeNode() -> Bool {
 		guard selectedNode != nil else {
 			return false
 		}
@@ -57,11 +50,9 @@ class GameScene: SKScene {
     func move(for touch: UITouch) {
         guard let selectedNode = selectedNode else { return }
         
-
         let previousPosition = touch.previousLocation(in: self)
-        
-//        guard self.atPoint(previousPosition) == selectedNode else { return }
         let positionInScene = touch.location(in: self)
+        
         let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
         
         selectedNode.move(for: touch, translation: translation)
@@ -69,59 +60,16 @@ class GameScene: SKScene {
     
     func touchDown(atPoint pos : CGPoint) {
 		selectNodeForTouch(touchLocation: pos)
-        
-        let notification = Notification(name: Notification.Name(rawValue: "selectedPoint"),
-                                        object: nil,
-                                        userInfo: ["x": pos.x, "y": pos.y])
-        NotificationCenter.default.post(notification)
+        Radio.post(selectedPoint: pos)
     }
     
     func selectNodeForTouch(touchLocation : CGPoint) {
         guard let touchedNode = self.atPoint(touchLocation) as? LineNode else { return }
-        let touchedNodeTrue: TranslationNodeProtocol = touchedNode.parentNode ?? touchedNode
-        
-        if let selectedNode = selectedNode {
-            self.selectedNode!.strokeColor = .blue
-            
-            if (isGroupEnabled) {
-                switch touchedNodeTrue {
-                case let touchedNodeTrue as LineNode:
-                    switch selectedNode {
-                    case let selectedNode as LineNode:
-                        let compodeNode = CompodeNode()
-                        compodeNode.add(node: selectedNode)
-                        compodeNode.add(node: touchedNodeTrue)
-                        self.selectedNode = compodeNode
-                    case let selectedNode as CompodeNode:
-                        selectedNode.add(node: touchedNodeTrue)
-                    default: break
-                    }
-                case let touchedNodeTrue as CompodeNode:
-                    self.selectedNode = touchedNodeTrue
-                    let notification = Notification(name: Notification.Name(rawValue: "node_have_parent"),
-                                                    object: nil,
-                                                    userInfo: ["isOn":true])
-                    NotificationCenter.default.post(notification)
-                default: break
-                }
-            } else {
-                self.selectedNode?.strokeColor = .blue
-                self.selectedNode = touchedNodeTrue
-            }
-            
-        } else {
-            self.selectedNode = touchedNodeTrue
-        }
-        
-        selectedNode!.strokeColor = .red
+        self.selectedNode = touchedNode.selectNode(oldSelected: self.selectedNode)
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        let notification = Notification(name: Notification.Name(rawValue: "selectedPoint"),
-                                        object: nil,
-                                        userInfo: ["x": pos.x, "y": pos.y])
-        NotificationCenter.default.post(notification)
-		
+        Radio.post(selectedPoint: pos)
     }
     
     func touchUp(atPoint pos : CGPoint) {
@@ -136,6 +84,19 @@ class GameScene: SKScene {
     }
 }
 
+///Оси координат
+extension GameScene {
+    
+    func setAxis(hidden: Bool) {
+        axisNode.isHidden = hidden
+    }
+    
+    func afterInit() {
+        self.addChild(axisNode)
+    }
+    
+}
+
 ///Группировка
 extension GameScene {
     func ungroup() {
@@ -148,29 +109,6 @@ extension GameScene {
             self.selectedNode = nil
         default:
             return
-        }
-    }
-    
-    func set(isGroupEnabled: Bool) -> Bool {
-        guard let selectedNode = selectedNode else {
-            self.isGroupEnabled = !isGroupEnabled
-            return !isGroupEnabled
-        }
-        if (isGroupEnabled) {
-            switch selectedNode {
-            case let node as LineNode:
-                let compodeNode = CompodeNode()
-                compodeNode.add(node: node)
-                self.selectedNode = compodeNode
-            default: break
-            }
-            self.isGroupEnabled = true
-            return true
-        } else {
-            self.isGroupEnabled = false
-            self.selectedNode?.strokeColor = .blue
-            self.selectedNode = nil
-            return false
         }
     }
 }
