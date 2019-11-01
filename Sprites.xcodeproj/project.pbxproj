@@ -11,6 +11,7 @@
 		98212C8623696E5C00F84C8E /* CustomMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8523696E5C00F84C8E /* CustomMath.swift */; };
 		98212C8823697AA800F84C8E /* AxisNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8723697AA800F84C8E /* AxisNode.swift */; };
 		98212C8A2369842300F84C8E /* CompositeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C892369842300F84C8E /* CompositeNode.swift */; };
+		983924BF236C424B00A266D0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983924BE236C424B00A266D0 /* UIColor+.swift */; };
 		987D46CD23465B0800611643 /* CGPoint+Ariphmetic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CA23465B0800611643 /* CGPoint+Ariphmetic.swift */; };
 		987D46CE23465B0800611643 /* Scene+rad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CB23465B0800611643 /* Scene+rad.swift */; };
 		987D46CF23465B0800611643 /* CGPath+Points.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D46CC23465B0800611643 /* CGPath+Points.swift */; };
@@ -30,6 +31,7 @@
 		98212C8523696E5C00F84C8E /* CustomMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMath.swift; sourceTree = "<group>"; };
 		98212C8723697AA800F84C8E /* AxisNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisNode.swift; sourceTree = "<group>"; };
 		98212C892369842300F84C8E /* CompositeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeNode.swift; sourceTree = "<group>"; };
+		983924BE236C424B00A266D0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		987D46CA23465B0800611643 /* CGPoint+Ariphmetic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Ariphmetic.swift"; sourceTree = "<group>"; };
 		987D46CB23465B0800611643 /* Scene+rad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Scene+rad.swift"; sourceTree = "<group>"; };
 		987D46CC23465B0800611643 /* CGPath+Points.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+Points.swift"; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				987D46CB23465B0800611643 /* Scene+rad.swift */,
 				987D46CC23465B0800611643 /* CGPath+Points.swift */,
 				98212C8523696E5C00F84C8E /* CustomMath.swift */,
+				983924BE236C424B00A266D0 /* UIColor+.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				98212C8823697AA800F84C8E /* AxisNode.swift in Sources */,
 				98212C8423694F8000F84C8E /* LineNode.swift in Sources */,
 				987D46CD23465B0800611643 /* CGPoint+Ariphmetic.swift in Sources */,
+				983924BF236C424B00A266D0 /* UIColor+.swift in Sources */,
 				98E6644C2345C01500E53820 /* GameScene.swift in Sources */,
 				98212C8A2369842300F84C8E /* CompositeNode.swift in Sources */,
 				98E6644E2345C01500E53820 /* GameViewController.swift in Sources */,

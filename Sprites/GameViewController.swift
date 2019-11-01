@@ -16,6 +16,7 @@ class GameViewController: UIViewController {
 	@IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var selectedPointLabel: UILabel!
     @IBOutlet weak var lineDefLabel: UILabel!
+    @IBOutlet weak var lockSwitch: UISwitch!
     
 	var scene: GameScene!
 	
@@ -54,6 +55,11 @@ class GameViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "fx_line"), object: nil, queue: .main) { (notification) in
             self.lineDefLabel.text = "Уравнение прямой: \(notification.userInfo!["string"]! as! String)"
         }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "node_have_parent"), object: nil, queue: .main) { (notification) in
+            self.lockSwitch.isOn = notification.userInfo!["isOn"]! as! Bool
+            self.groupSwitchChanged(self.lockSwitch)
+        }
     }
 
     override var shouldAutorotate: Bool {
@@ -73,6 +79,14 @@ class GameViewController: UIViewController {
     
     @IBAction func axisButtonAction(_ sender: Any) {
         scene.setAxis(hidden: !scene.axisNode.isHidden)
+    }
+    
+    @IBAction func groupSwitchChanged(_ sender: UISwitch) {
+        sender.isOn = scene.set(isGroupEnabled: sender.isOn)
+    }
+    
+    @IBAction func ungroup(_ sender: Any) {
+        scene.ungroup()
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

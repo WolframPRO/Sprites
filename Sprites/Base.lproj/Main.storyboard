@@ -69,18 +69,43 @@
                                                         <action selector="axisButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="C08-8i-obG"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Группировка" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXg-wY-Ap9">
+                                                    <rect key="frame" x="8" y="165" width="104" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZhC-y2-iEO">
+                                                    <rect key="frame" x="127" y="160" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="groupSwitchChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="m00-A3-jEe"/>
+                                                    </connections>
+                                                </switch>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ElT-D0-pvu">
+                                                    <rect key="frame" x="314" y="160.5" width="74" height="30"/>
+                                                    <state key="normal" title="Разорвать"/>
+                                                    <connections>
+                                                        <action selector="ungroup:" destination="BV1-FR-VrT" eventType="touchUpInside" id="oZy-Lh-5jS"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jJv-6H-3qQ" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="8Zj-tA-ti3"/>
                                                 <constraint firstItem="g8j-DY-gKf" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="-2" id="9YV-XY-6d0"/>
                                                 <constraint firstItem="ftR-fc-QqM" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="EMm-c2-7h1"/>
+                                                <constraint firstItem="jJv-6H-3qQ" firstAttribute="top" secondItem="PXg-wY-Ap9" secondAttribute="bottom" constant="8" id="GmW-ds-22K"/>
+                                                <constraint firstItem="ZhC-y2-iEO" firstAttribute="leading" secondItem="PXg-wY-Ap9" secondAttribute="trailing" constant="15" id="H6y-bY-tQd"/>
+                                                <constraint firstItem="ZhC-y2-iEO" firstAttribute="centerY" secondItem="PXg-wY-Ap9" secondAttribute="centerY" id="IUq-to-Fud"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="leading" secondItem="g8j-DY-gKf" secondAttribute="trailing" constant="8" id="L3k-wU-hkq"/>
+                                                <constraint firstItem="ElT-D0-pvu" firstAttribute="centerY" secondItem="PXg-wY-Ap9" secondAttribute="centerY" id="TTl-Md-Zf9"/>
                                                 <constraint firstItem="4WT-9G-ioo" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="TeS-tL-Q8B"/>
                                                 <constraint firstItem="ftR-fc-QqM" firstAttribute="top" secondItem="jJv-6H-3qQ" secondAttribute="bottom" constant="8" id="VMO-td-B2i"/>
                                                 <constraint firstItem="4WT-9G-ioo" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="8" id="WNL-HT-q3J"/>
+                                                <constraint firstAttribute="trailing" secondItem="ElT-D0-pvu" secondAttribute="trailing" constant="12" id="ZWW-1Q-CJ0"/>
                                                 <constraint firstAttribute="bottom" secondItem="ftR-fc-QqM" secondAttribute="bottom" constant="12" id="mXo-OE-xjx"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="-2" id="uIH-kG-Vvj"/>
                                                 <constraint firstAttribute="trailing" secondItem="cdl-8O-PFr" secondAttribute="trailing" constant="12" id="vLo-2C-230"/>
+                                                <constraint firstItem="PXg-wY-Ap9" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="8" id="xiT-V6-9RZ"/>
                                             </constraints>
                                         </view>
                                         <blurEffect style="systemUltraThinMaterialLight"/>
@@ -111,6 +136,7 @@
                     <connections>
                         <outlet property="controlContentView" destination="lfw-TJ-TeB" id="n9H-8Z-k85"/>
                         <outlet property="lineDefLabel" destination="jJv-6H-3qQ" id="xEA-sF-xmt"/>
+                        <outlet property="lockSwitch" destination="ZhC-y2-iEO" id="58r-d0-9xa"/>
                         <outlet property="sceneView" destination="8Nt-SM-MwA" id="3zL-6D-cCr"/>
                         <outlet property="selectedPointLabel" destination="ftR-fc-QqM" id="thf-oJ-HdJ"/>
                         <outlet property="visualEffectView" destination="qIQ-sF-rSu" id="xI5-lv-0Uw"/>

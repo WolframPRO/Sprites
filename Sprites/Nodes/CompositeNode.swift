@@ -6,17 +6,30 @@
 //  Copyright © 2019 Вова Петров. All rights reserved.
 //
 
-import Foundation
+import SpriteKit
 
-class CompodeNode {
+class CompodeNode: TranslationNodeProtocol {
+    
     var nodes: [LineNode] = []
     
     func add(node: LineNode) {
+        weak var weakSelf = self
+        node.parentNode = weakSelf
         nodes.append(node)
     }
     
     func removeAll() {
+        _ = nodes.map { $0.parentNode = nil; $0.strokeColor = .blue }
         nodes.removeAll()
+    }
+    
+    func removeFromParent() {
+        _ = nodes.map { $0.removeFromParent(); $0.parentNode = nil }
+        nodes.removeAll()
+    }
+    
+    func move(for touch: UITouch, translation: CGPoint) {
+        self.panForTranslation(translation)
     }
     
     func panForTranslation(_ translation: CGPoint) {
@@ -24,6 +37,12 @@ class CompodeNode {
         for node in nodes {
             node.parentNode = weakSelf
             node.panForTranslation(translation)
+        }
+    }
+    
+    var strokeColor: UIColor = .blue {
+        didSet {
+            _ = nodes.map { $0.strokeColor = self.strokeColor.mix(0.5, over: .green) }
         }
     }
 }

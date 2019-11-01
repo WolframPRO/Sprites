@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class LineNode: SKShapeNode {
+class LineNode: SKShapeNode, TranslationNodeProtocol {
     
     public var parentNode: CompodeNode?
     
@@ -28,6 +28,28 @@ class LineNode: SKShapeNode {
     func deselectPoint() {
         self.startSelected = false
         self.endSelected = false
+    }
+    
+    func move(for touch: UITouch, translation: CGPoint) {
+        if let point = self.arountEqualToExtremePoints(point: touch.location(in: self)) {
+            if self.start.equalTo(point) {
+                self.startSelected = true
+            } else if self.end.equalTo(point) {
+                self.endSelected = true
+            }
+        }
+        
+        let positionInScene = touch.location(in: self)
+        
+        if self.startSelected {
+                self.start = positionInScene
+        }
+        else if self.endSelected {
+                self.end = positionInScene
+        }
+        else {
+            self.panForTranslation(translation)
+        }
     }
     
     func panForTranslation(_ translation: CGPoint) {

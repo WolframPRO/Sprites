@@ -9,12 +9,15 @@
 import SpriteKit
 import GameplayKit
 
-protocol TranslationNodeProtocol: SKNode {
-    func panForTranslation(_ translation: CGPoint)
+protocol TranslationNodeProtocol {
+    func move(for touch: UITouch, translation: CGPoint)
+    var strokeColor: UIColor { get set }
+    func removeFromParent()
 }
 
 class GameScene: SKScene {
     
+    var isGroupEnabled = false
 	var selectedNode: TranslationNodeProtocol?
     var axisNode = AxisNode()
     
@@ -54,30 +57,14 @@ class GameScene: SKScene {
     func move(for touch: UITouch) {
         guard let selectedNode = selectedNode else { return }
         
-        if let point = selectedNode.arountEqualToExtremePoints(point: touch.location(in: selectedNode)) {
-            if selectedNode.start.equalTo(point) {
-                selectedNode.startSelected = true
-            } else if selectedNode.end.equalTo(point) {
-                selectedNode.endSelected = true
-            }
-        }
+
+        let previousPosition = touch.previousLocation(in: self)
         
+//        guard self.atPoint(previousPosition) == selectedNode else { return }
         let positionInScene = touch.location(in: self)
+        let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
         
-        if selectedNode.startSelected {
-                selectedNode.start = positionInScene
-        }
-        else if selectedNode.endSelected {
-                selectedNode.end = positionInScene
-        }
-        else {
-            let previousPosition = touch.previousLocation(in: self)
-            
-            guard self.atPoint(previousPosition) == selectedNode else { return }
-            let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
-                
-            selectedNode.panForTranslation(translation)
-        }
+        selectedNode.move(for: touch, translation: translation)
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -90,15 +77,42 @@ class GameScene: SKScene {
     }
     
     func selectNodeForTouch(touchLocation : CGPoint) {
-        guard let touchedNode = self.atPoint(touchLocation) as? LineNode else {
-            return
-        }
+        guard let touchedNode = self.atPoint(touchLocation) as? LineNode else { return }
+        let touchedNodeTrue: TranslationNodeProtocol = touchedNode.parentNode ?? touchedNode
         
         if let selectedNode = selectedNode {
-            selectedNode.strokeColor = .blue
+            self.selectedNode!.strokeColor = .blue
+            
+            if (isGroupEnabled) {
+                switch touchedNodeTrue {
+                case let touchedNodeTrue as LineNode:
+                    switch selectedNode {
+                    case let selectedNode as LineNode:
+                        let compodeNode = CompodeNode()
+                        compodeNode.add(node: selectedNode)
+                        compodeNode.add(node: touchedNodeTrue)
+                        self.selectedNode = compodeNode
+                    case let selectedNode as CompodeNode:
+                        selectedNode.add(node: touchedNodeTrue)
+                    default: break
+                    }
+                case let touchedNodeTrue as CompodeNode:
+                    self.selectedNode = touchedNodeTrue
+                    let notification = Notification(name: Notification.Name(rawValue: "node_have_parent"),
+                                                    object: nil,
+                                                    userInfo: ["isOn":true])
+                    NotificationCenter.default.post(notification)
+                default: break
+                }
+            } else {
+                self.selectedNode?.strokeColor = .blue
+                self.selectedNode = touchedNodeTrue
+            }
+            
+        } else {
+            self.selectedNode = touchedNodeTrue
         }
         
-        selectedNode = touchedNode
         selectedNode!.strokeColor = .red
     }
     
@@ -112,11 +126,52 @@ class GameScene: SKScene {
     
     func touchUp(atPoint pos : CGPoint) {
         guard let selectedNode = selectedNode else { return }
-        selectedNode.deselectPoint()
+        if selectedNode is LineNode {
+            (selectedNode as! LineNode).deselectPoint()
+        }
     }
 	
 	override func didMove(to view: SKView) {
 		
+    }
+}
+
+///Группировка
+extension GameScene {
+    func ungroup() {
+        guard let selectedNode = selectedNode else { return }
+        
+        switch selectedNode {
+        case let node as CompodeNode:
+            node.removeAll()
+            self.selectedNode?.strokeColor = .blue
+            self.selectedNode = nil
+        default:
+            return
+        }
+    }
+    
+    func set(isGroupEnabled: Bool) -> Bool {
+        guard let selectedNode = selectedNode else {
+            self.isGroupEnabled = !isGroupEnabled
+            return !isGroupEnabled
+        }
+        if (isGroupEnabled) {
+            switch selectedNode {
+            case let node as LineNode:
+                let compodeNode = CompodeNode()
+                compodeNode.add(node: node)
+                self.selectedNode = compodeNode
+            default: break
+            }
+            self.isGroupEnabled = true
+            return true
+        } else {
+            self.isGroupEnabled = false
+            self.selectedNode?.strokeColor = .blue
+            self.selectedNode = nil
+            return false
+        }
     }
 }
 
