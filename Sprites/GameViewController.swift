@@ -11,14 +11,28 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-	@IBOutlet weak var sceneView: SKView!
+    @IBOutlet weak var contentHeight: NSLayoutConstraint!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var sceneView: SKView!
 	@IBOutlet weak var controlContentView: UIView!
 	@IBOutlet weak var visualEffectView: UIVisualEffectView!
     @IBOutlet weak var selectedPointLabel: UILabel!
     @IBOutlet weak var lineDefLabel: UILabel!
     @IBOutlet weak var lockSwitch: UISwitch!
+    @IBOutlet weak var zField: UITextField!
+    @IBOutlet weak var selectedPointSwitcher: UISegmentedControl!
+    @IBOutlet weak var morfingPicker: UIPickerView!
     
 	var scene: GameScene!
+    var isMorfingMode: Bool = false {
+        didSet {
+            contentHeight.constant = isMorfingMode ? 766 : 350
+            UIView.animate(withDuration: 0.25) {
+                self.view.layoutIfNeeded()
+            }
+            StateMachine.state = isMorfingMode ? .morfing : .normal
+        }
+    }
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,18 +63,21 @@ class GameViewController: UIViewController {
 		visualEffectView.layer.masksToBounds = true
 		visualEffectView.clipsToBounds = true
         
-        Radio.Subscribe.selectedPoint { (text) in
-            self.selectedPointLabel.text = text
+        Radio.Subscribe.selectedPoint {[weak self] (arg) in
+            
+            let (first, end) = arg
+            self?.fillSelectedPointLabel(start: first, end: end)
         }
         
         Radio.Subscribe.fxLine { (text) in
             self.lineDefLabel.text = text
         }
-        
-//        Radio.Subscribe.nodeHaveParent { (have) in
-//            self.lockSwitch.isOn = have
-//            self.groupSwitchChanged(self.lockSwitch)
-//        }
+    }
+    
+    func fillSelectedPointLabel(start: Point3D, end: Point3D) {
+        let point = selectedPointSwitcher.selectedSegmentIndex == 0 ? start : end
+        self.selectedPointLabel.text = "x: \(floor(point.x)) y: \(floor(point.y))"
+        self.zField.text = "\(floor(point.z))"
     }
 
     override var shouldAutorotate: Bool {
@@ -83,7 +100,7 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func groupSwitchChanged(_ sender: UISwitch) {
-        State.isGroupState = sender.isOn
+        StateMachine.state = sender.isOn ? .group : .normal
     }
     
     @IBAction func ungroup(_ sender: Any) {
@@ -100,5 +117,53 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    @IBAction func zValueHasChanged(_ sender: Any) {
+        guard let text = zField.text,
+            let floatValue = Float(text) else { return }
+        
+        let value = CGFloat(floatValue)
+        scene.zChanged(to: value, isLast: selectedPointSwitcher.selectedSegmentIndex == 1)
+    }
+    @IBAction func selectPoint(_ sender: Any) {
+        pointChanged()
+    }
+    
+    func pointChanged() {
+        scene.updateRadioState()
+    }
+    
+    @IBAction func morphAction(_ sender: UIButton) {
+       isMorfingMode = !isMorfingMode
+        containerView.subviews.forEach {
+            $0.alpha = isMorfingMode ? 0.5 : 1.0
+            $0.isUserInteractionEnabled = !isMorfingMode
+        }
+        sender.alpha = 1.0
+        sender.isUserInteractionEnabled = true
+        morfingPicker.alpha = 1.0
+        morfingPicker.isUserInteractionEnabled = true
+    }
+}
+
+
+extension GameViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        100
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        "\(row+1)"
+    }
+}
+
+extension GameViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        Radio.post(morfingValue: row+1)
     }
 }

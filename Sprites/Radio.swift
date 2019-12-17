@@ -9,6 +9,14 @@
 import Foundation
 
 class Radio {
+    
+    static func post(morfingValue: Int) {
+        let notification = Notification(name: Notification.Name(rawValue: "morfing_value"),
+                                        object: nil,
+                                        userInfo: ["morfingValue":morfingValue])
+        NotificationCenter.default.post(notification)
+    }
+    
     static func post(lineDef: String) {
         let notification = Notification(name: Notification.Name(rawValue: "fx_line"),
                                         object: nil,
@@ -16,10 +24,11 @@ class Radio {
         NotificationCenter.default.post(notification)
     }
     
-    static func post(selectedPoint: CGPoint) {
+    static func post(selectedPoint first: Point3D, end: Point3D) {
         let notification = Notification(name: Notification.Name(rawValue: "selectedPoint"),
                                         object: nil,
-                                        userInfo: ["x": selectedPoint.x, "y": selectedPoint.y])
+                                        userInfo: ["first": first,
+                                                   "end": end])
         NotificationCenter.default.post(notification)
     }
     
@@ -31,9 +40,16 @@ class Radio {
     }
     
     class Subscribe {
-        static func selectedPoint(block: @escaping (String)->()) {
+        
+        static func morfingValue(block: @escaping (Int)->()) {
+            NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "morfing_value"), object: nil, queue: .main) { (notification) in
+                block(notification.userInfo!["morfingValue"]! as! Int)
+            }
+        }
+        
+        static func selectedPoint(block: @escaping ((first: Point3D, end: Point3D))->()) {
             NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "selectedPoint"), object: nil, queue: .main) { (notification) in
-                block("Выбрана точка: x:\(Int(notification.userInfo!["x"]! as! CGFloat)) y:\(Int(notification.userInfo!["y"]! as! CGFloat))")
+                block((notification.userInfo!["first"]! as! Point3D, notification.userInfo!["end"]! as! Point3D))
             }
         }
         

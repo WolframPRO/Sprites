@@ -13,16 +13,22 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
     public var parentNode: CompodeNode?
     
     public var startSelected = false
-    public var start: CGPoint {
+    public var start: Point3D {
         didSet {
             update()
         }
     }
     public var endSelected = false
-    public var end: CGPoint {
+    public var end: Point3D {
         didSet {
             update()
         }
+    }
+    
+    func copy() -> LineNode {
+        let node = LineNode(start: start, end: end)
+        self.parent?.addChild(node)
+        return node
     }
     
     func deselectPoint() {
@@ -30,11 +36,12 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         self.endSelected = false
     }
     
-    func move(for touch: UITouch, translation: CGPoint) {
-        if let point = self.arountEqualToExtremePoints(point: touch.location(in: self)) {
-            if self.start.equalTo(point) {
+    func move(for touch: UITouch, translation: Point3D) {
+        let touchLocation = touch.location(in: self)
+        if let point = self.arountEqualToExtremePoints(point: touchLocation.toPoint3D()) {
+            if self.start == point {
                 self.startSelected = true
-            } else if self.end.equalTo(point) {
+            } else if self.end == point {
                 self.endSelected = true
             }
         }
@@ -42,27 +49,23 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         let positionInScene = touch.location(in: self)
         
         if self.startSelected {
-                self.start = positionInScene
+            self.start = Point3D(x: positionInScene.x, y: positionInScene.y, z: self.start.z)
         }
         else if self.endSelected {
-                self.end = positionInScene
+            self.end = Point3D(x: positionInScene.x, y: positionInScene.y, z: self.end.z)
         }
         else {
             self.panForTranslation(translation)
         }
     }
     
-    func panForTranslation(_ translation: CGPoint) {
-        guard let curpath = self.path else { return }
-        let points = curpath.getPathElementsPoints()
-
-        let firstCoord = points[0].plus(translation)
-        let lastCoord = points[1].plus(translation)
+    func panForTranslation(_ translation: Point3D) {
         
-        setLine(start: firstCoord, end: lastCoord)
+        start = start.plus(translation)
+        end = end.plus(translation)
     }
     
-    func arountEqualToExtremePoints(point: CGPoint) -> CGPoint? {
+    func arountEqualToExtremePoints(point: Point3D) -> Point3D? {
         if aroundEqual(first: start, second: point) {
            return start
         }
@@ -72,7 +75,7 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         return nil
     }
     
-    func aroundEqual(first: CGPoint, second: CGPoint) -> Bool {
+    func aroundEqual(first: Point3D, second: Point3D) -> Bool {
         let firstX  = Int(first.x)
         let firstY  = Int(first.y)
         
@@ -88,12 +91,12 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         return matchY && matchX
     }
     
-    public func setLine(start: CGPoint, end: CGPoint) {
+    public func setLine(start: Point3D, end: Point3D) {
         self.start = start
         self.end = end
     }
     
-    init(start: CGPoint, end: CGPoint, color: UIColor = .blue, width: CGFloat = 10.0) {
+    init(start: Point3D, end: Point3D, color: UIColor = .blue, width: CGFloat = 5.0) {
         self.start = start
         self.end = end
         super.init()
@@ -106,17 +109,26 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK:- Z
+    func zChanged(to zValue: CGFloat, isLast: Bool) {
+        let firstCoord = Point3D(x: start.x, y: start.y, z: isLast ? start.z : zValue)
+        let lastCoord = Point3D(x: end.x, y: end.y, z: isLast ? zValue : end.z)
+        start = firstCoord
+        end = lastCoord
+    }
+    
     private func update() {
         let path = CGMutablePath()
-        path.move(to: start)
-        path.addLine(to:  end)
-        path.addEllipse(in: CGRect(x: start.x-5, y: start.y-5, width: 10, height: 10))
-        path.addEllipse(in: CGRect(x: end.x-5, y: end.y-5, width: 10, height: 10))
+        path.move(to: start.toPoint2D())
+        path.addLine(to:  end.toPoint2D())
+        path.addEllipse(in: CGRect(x: start.x-2, y: start.y-2, width: 4, height: 4))
+        path.addEllipse(in: CGRect(x: end.x-2, y: end.y-2, width: 4, height: 4))
         self.path = path
         
-        let def = CustomMath.lineDefinition(between: start, and: end)
+        let def = Math2D.lineDefinition(between: start.toPoint2D(), and: end.toPoint2D())
         let lineDef = "\(Int(def.A))x + \(Int(def.B))y + \(Int(def.C)) = 0"
         Radio.post(lineDef: lineDef)
+        Radio.post(selectedPoint: start, end: end)
     }
 }
 
@@ -127,7 +139,8 @@ extension LineNode {
         
         let node = selectNodeWithoutColorize(oldSelected: oldSelected)
         node.strokeColor = .red
-        
+
+        Radio.post(selectedPoint: start, end: end)
         return node
     }
     
@@ -136,7 +149,7 @@ extension LineNode {
             return parent.selectNode(oldSelected: oldSelected)
         }
         
-        guard State.isGroupState else {
+        guard StateMachine.state == .group else {
             return self
         }
         
@@ -144,7 +157,9 @@ extension LineNode {
         case let oldSelected as LineNode:
             let compodeNode = CompodeNode()
             compodeNode.add(node: oldSelected)
-            compodeNode.add(node: self)
+            if oldSelected != self {
+                compodeNode.add(node: self)
+            }
             return compodeNode
         case let oldSelected as CompodeNode:
             oldSelected.add(node: self)

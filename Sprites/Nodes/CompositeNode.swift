@@ -24,20 +24,20 @@ class CompodeNode: TranslationNodeProtocol {
     }
     
     func removeAll() {
-        _ = nodes.map { $0.parentNode = nil; $0.strokeColor = .blue }
+        nodes.forEach { $0.parentNode = nil; $0.strokeColor = .blue }
         nodes.removeAll()
     }
     
     func removeFromParent() {
-        _ = nodes.map { $0.removeFromParent(); $0.parentNode = nil }
+        nodes.forEach { $0.removeFromParent(); $0.parentNode = nil }
         nodes.removeAll()
     }
     
-    func move(for touch: UITouch, translation: CGPoint) {
+    func move(for touch: UITouch, translation: Point3D) {
         self.panForTranslation(translation)
     }
     
-    func panForTranslation(_ translation: CGPoint) {
+    func panForTranslation(_ translation: Point3D) {
         weak var weakSelf = self
         for node in nodes {
             node.parentNode = weakSelf
@@ -47,7 +47,10 @@ class CompodeNode: TranslationNodeProtocol {
     
     var strokeColor: UIColor = .blue {
         didSet {
-            _ = nodes.map { $0.strokeColor = self.strokeColor.mix(with: .green) }
+            nodes.forEach { $0.strokeColor = self.strokeColor.mix(with: .green) }
         }
     }
+    
+    // MARK:- Z
+    func zChanged(to zValue: CGFloat, isLast: Bool) {}
 }

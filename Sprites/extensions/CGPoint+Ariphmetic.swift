@@ -15,3 +15,12 @@ extension CGPoint {
     }
 }
 
+extension Point3D: Equatable {
+    func plus(_ point: Point3D) -> Point3D {
+        return Point3D(x: point.x + self.x, y: point.y + self.y, z: point.z + self.z)
+    }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.x == rhs.x && lhs.y == rhs.y
+    }
+}
