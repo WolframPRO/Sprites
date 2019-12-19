@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980F214823ABCFBC00F216FF /* RestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980F214723ABCFBC00F216FF /* RestoreManager.swift */; };
+		980F214A23ABD0E000F216FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980F214923ABD0E000F216FF /* Constants.swift */; };
 		98212C8423694F8000F84C8E /* LineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8323694F8000F84C8E /* LineNode.swift */; };
 		98212C8623696E5C00F84C8E /* Math2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8523696E5C00F84C8E /* Math2D.swift */; };
 		98212C8823697AA800F84C8E /* AxisNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98212C8723697AA800F84C8E /* AxisNode.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		980F214723ABCFBC00F216FF /* RestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreManager.swift; sourceTree = "<group>"; };
+		980F214923ABD0E000F216FF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		981D48A52345F4DA00F78A08 /* Sprites.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sprites.entitlements; sourceTree = "<group>"; };
 		98212C8323694F8000F84C8E /* LineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNode.swift; sourceTree = "<group>"; };
 		98212C8523696E5C00F84C8E /* Math2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math2D.swift; sourceTree = "<group>"; };
@@ -68,6 +72,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		980F214623ABCFAC00F216FF /* Save */ = {
+			isa = PBXGroup;
+			children = (
+				980F214723ABCFBC00F216FF /* RestoreManager.swift */,
+			);
+			path = Save;
+			sourceTree = "<group>";
+		};
 		98212C8223694F7000F84C8E /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +116,7 @@
 				987D46CC23465B0800611643 /* CGPath+Points.swift */,
 				98212C8523696E5C00F84C8E /* Math2D.swift */,
 				983924BE236C424B00A266D0 /* UIColor+.swift */,
+				980F214923ABD0E000F216FF /* Constants.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -130,6 +143,7 @@
 			children = (
 				981D48A52345F4DA00F78A08 /* Sprites.entitlements */,
 				9870328323A95A86000AB124 /* Morfing */,
+				980F214623ABCFAC00F216FF /* Save */,
 				98E6644B2345C01500E53820 /* GameScene.swift */,
 				98F850C023A4EFCE0027AEC8 /* GameSceneLowLevel.swift */,
 				98F850BE23A4EF9C0027AEC8 /* GameScenePiblic.swift */,
@@ -227,6 +241,7 @@
 				983924BF236C424B00A266D0 /* UIColor+.swift in Sources */,
 				983924C1236C9C7500A266D0 /* Radio.swift in Sources */,
 				98E6644C2345C01500E53820 /* GameScene.swift in Sources */,
+				980F214823ABCFBC00F216FF /* RestoreManager.swift in Sources */,
 				98212C8A2369842300F84C8E /* CompositeNode.swift in Sources */,
 				98E6644E2345C01500E53820 /* GameViewController.swift in Sources */,
 				98F850BF23A4EF9C0027AEC8 /* GameScenePiblic.swift in Sources */,
@@ -235,6 +250,7 @@
 				987D46CF23465B0800611643 /* CGPath+Points.swift in Sources */,
 				98E664462345C01500E53820 /* AppDelegate.swift in Sources */,
 				987D46CE23465B0800611643 /* Scene+rad.swift in Sources */,
+				980F214A23ABD0E000F216FF /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

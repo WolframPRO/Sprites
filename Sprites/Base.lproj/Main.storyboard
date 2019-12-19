@@ -137,17 +137,13 @@
                                                         <action selector="morphAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="H7c-iq-95g"/>
                                                     </connections>
                                                 </button>
-                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gXO-PY-fgq">
-                                                    <rect key="frame" x="0.0" y="180" width="500" height="216"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="500" id="8gU-xw-YUh"/>
-                                                        <constraint firstAttribute="height" constant="216" id="AAM-SN-qgA"/>
-                                                    </constraints>
+                                                <slider opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Lo4-gi-ubG">
+                                                    <rect key="frame" x="14" y="50" width="472" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
-                                                        <outlet property="dataSource" destination="BV1-FR-VrT" id="1xq-mv-VGi"/>
-                                                        <outlet property="delegate" destination="BV1-FR-VrT" id="ont-Tg-yEh"/>
+                                                        <action selector="valueChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="DvY-p4-FhG"/>
                                                     </connections>
-                                                </pickerView>
+                                                </slider>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jJv-6H-3qQ" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="16" id="8Zj-tA-ti3"/>
@@ -160,7 +156,6 @@
                                                 <constraint firstItem="ZhC-y2-iEO" firstAttribute="centerY" secondItem="PXg-wY-Ap9" secondAttribute="centerY" id="IUq-to-Fud"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="leading" secondItem="g8j-DY-gKf" secondAttribute="trailing" constant="8" id="L3k-wU-hkq"/>
                                                 <constraint firstItem="zTf-Zv-ZRg" firstAttribute="centerY" secondItem="qZ2-qt-xyf" secondAttribute="centerY" id="M6g-Zi-cmK"/>
-                                                <constraint firstItem="gXO-PY-fgq" firstAttribute="centerX" secondItem="WAf-TL-e2Q" secondAttribute="centerX" id="NTW-sQ-er2"/>
                                                 <constraint firstItem="ElT-D0-pvu" firstAttribute="centerY" secondItem="PXg-wY-Ap9" secondAttribute="centerY" id="TTl-Md-Zf9"/>
                                                 <constraint firstItem="4WT-9G-ioo" firstAttribute="leading" secondItem="WAf-TL-e2Q" secondAttribute="leading" constant="16" id="TeS-tL-Q8B"/>
                                                 <constraint firstAttribute="bottom" secondItem="aHp-qG-gkv" secondAttribute="bottom" constant="10" id="VJf-dP-afl"/>
@@ -171,7 +166,6 @@
                                                 <constraint firstItem="Rdm-FC-HrM" firstAttribute="leading" secondItem="4WT-9G-ioo" secondAttribute="trailing" constant="20" id="eUS-Uq-Oqc"/>
                                                 <constraint firstItem="ftR-fc-QqM" firstAttribute="top" secondItem="jJv-6H-3qQ" secondAttribute="bottom" constant="12" id="l2c-En-Ic1"/>
                                                 <constraint firstAttribute="bottom" secondItem="ftR-fc-QqM" secondAttribute="bottom" constant="16" id="mXo-OE-xjx"/>
-                                                <constraint firstItem="gXO-PY-fgq" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="180" id="nCT-fL-9dI"/>
                                                 <constraint firstItem="qZ2-qt-xyf" firstAttribute="centerY" secondItem="ftR-fc-QqM" secondAttribute="centerY" id="rvy-Yq-aop"/>
                                                 <constraint firstItem="cdl-8O-PFr" firstAttribute="top" secondItem="WAf-TL-e2Q" secondAttribute="top" constant="8" id="uIH-kG-Vvj"/>
                                                 <constraint firstAttribute="trailing" secondItem="cdl-8O-PFr" secondAttribute="trailing" constant="16" id="vLo-2C-230"/>
@@ -209,7 +203,7 @@
                         <outlet property="controlContentView" destination="lfw-TJ-TeB" id="n9H-8Z-k85"/>
                         <outlet property="lineDefLabel" destination="jJv-6H-3qQ" id="xEA-sF-xmt"/>
                         <outlet property="lockSwitch" destination="ZhC-y2-iEO" id="58r-d0-9xa"/>
-                        <outlet property="morfingPicker" destination="gXO-PY-fgq" id="FAS-ea-TuF"/>
+                        <outlet property="morfingSlider" destination="Lo4-gi-ubG" id="6Gr-8T-BCd"/>
                         <outlet property="sceneView" destination="8Nt-SM-MwA" id="3zL-6D-cCr"/>
                         <outlet property="selectedPointLabel" destination="ftR-fc-QqM" id="thf-oJ-HdJ"/>
                         <outlet property="selectedPointSwitcher" destination="aHp-qG-gkv" id="Q1I-19-LMp"/>

@@ -10,7 +10,7 @@ import SpriteKit
 
 class LineNode: SKShapeNode, TranslationNodeProtocol {
     
-    public var parentNode: CompodeNode?
+    public var parentNode: ComposeNode?
     
     public var startSelected = false
     public var start: Point3D {
@@ -57,6 +57,7 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         else {
             self.panForTranslation(translation)
         }
+        RestoreManager.shared.store()
     }
     
     func panForTranslation(_ translation: Point3D) {
@@ -96,7 +97,18 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         self.end = end
     }
     
-    init(start: Point3D, end: Point3D, color: UIColor = .blue, width: CGFloat = 5.0) {
+    static func line(to scene: SKScene, startPoint: Point3D, endPoint: Point3D, color: UIColor = .blue, width: CGFloat = Constants.lineWidth) -> LineNode {
+        let line = LineNode.init(start: startPoint, end: endPoint, color: color)
+        scene.addChild(line)
+        return line
+    }
+    
+    override func encode(with aCoder: NSCoder) {
+        aCoder.encode(start, forKey: "startPoint")
+        aCoder.encode(end, forKey: "endPoint")
+    }
+    
+    init(start: Point3D, end: Point3D, color: UIColor = .blue, width: CGFloat = Constants.lineWidth) {
         self.start = start
         self.end = end
         super.init()
@@ -105,8 +117,23 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         self.update()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    init(startPoint: Point3D, endPoint: Point3D) {
+        self.start = startPoint
+        self.end = endPoint
+        super.init()
+        self.setLine(start: startPoint, end: endPoint)
+    }
+    
+    func addAfterDecoderInit(to scene: SKScene) {
+        update()
+        scene.addChild(self)
+    }
+    
+    required convenience init(coder aDecoder: NSCoder) {
+        let startPoint2 = aDecoder.decodeObject(of: [Point3D.self], forKey: "startPoint") as? Point3D
+        let endPoint2 = aDecoder.decodeObject(of: [Point3D.self], forKey: "endPoint") as? Point3D
+        self.init(start: startPoint2 ?? Point3D(x: 0, y: 0, z: 0),
+                  end: endPoint2 ?? Point3D(x: 0, y: 0, z: 0))
     }
     
     // MARK:- Z
@@ -121,8 +148,14 @@ class LineNode: SKShapeNode, TranslationNodeProtocol {
         let path = CGMutablePath()
         path.move(to: start.toPoint2D())
         path.addLine(to:  end.toPoint2D())
-        path.addEllipse(in: CGRect(x: start.x-2, y: start.y-2, width: 4, height: 4))
-        path.addEllipse(in: CGRect(x: end.x-2, y: end.y-2, width: 4, height: 4))
+        path.addEllipse(in: CGRect(x: start.x-Constants.coordLineWidth/2,
+                                   y: start.y-Constants.coordLineWidth/2,
+                                   width: Constants.coordLineWidth,
+                                   height: Constants.coordLineWidth))
+        path.addEllipse(in: CGRect(x: end.x-Constants.coordLineWidth/2,
+                                   y: end.y-Constants.coordLineWidth/2,
+                                   width: Constants.coordLineWidth,
+                                   height: Constants.coordLineWidth))
         self.path = path
         
         let def = Math2D.lineDefinition(between: start.toPoint2D(), and: end.toPoint2D())
@@ -155,17 +188,26 @@ extension LineNode {
         
         switch oldSelected {
         case let oldSelected as LineNode:
-            let compodeNode = CompodeNode()
+            let compodeNode = ComposeNode()
             compodeNode.add(node: oldSelected)
             if oldSelected != self {
                 compodeNode.add(node: self)
             }
+            RestoreManager.shared.add(line: compodeNode)
+            RestoreManager.shared.store()
             return compodeNode
-        case let oldSelected as CompodeNode:
+        case let oldSelected as ComposeNode:
             oldSelected.add(node: self)
+            RestoreManager.shared.store()
             return oldSelected
         default:
+            RestoreManager.shared.store()
             return self
         }
+    }
+    
+    func group(into: ComposeNode) {
+        self.parentNode = into
+        into.add(node: self)
     }
 }

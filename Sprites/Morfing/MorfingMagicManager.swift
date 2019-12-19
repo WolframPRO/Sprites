@@ -10,12 +10,12 @@ import SpriteKit
 import GameplayKit
 
 class MorfingMagicManager {
-    var start: CompodeNode?
-    var clearStart: CompodeNode?
-    var balancedStart: CompodeNode?
+    var start: ComposeNode?
+    var clearStart: ComposeNode?
+    var balancedStart: ComposeNode?
     
-    var end: CompodeNode?
-    var fakeStartNode: CompodeNode?
+    var end: ComposeNode?
+    var fakeStartNode: ComposeNode?
     
     enum MorfingError: Error {
         case noFirstNode
@@ -39,10 +39,10 @@ class MorfingMagicManager {
         }
     }
     
-    func set(start: CompodeNode) {
-        let node = CompodeNode()
-        clearStart = CompodeNode()
-        balancedStart = CompodeNode()
+    func set(start: ComposeNode) {
+        let node = ComposeNode()
+        clearStart = ComposeNode()
+        balancedStart = ComposeNode()
         node.nodes              = start.nodes.map { $0.copy() }
         clearStart?.nodes       = start.nodes.map { $0.copy() }
         balancedStart?.nodes    = start.nodes.map { $0.copy() }
@@ -50,8 +50,8 @@ class MorfingMagicManager {
         self.start = node
     }
     
-    func set(end: CompodeNode) {
-        let node = CompodeNode()
+    func set(end: ComposeNode) {
+        let node = ComposeNode()
         node.nodes = end.nodes.map { $0.copy() }
         node.nodes.forEach { $0.strokeColor = UIColor.red.mix(with: .blue) }
         self.end = node

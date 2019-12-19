@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-protocol TranslationNodeProtocol: AnyObject {
+protocol TranslationNodeProtocol: NSObject {
     func move(for touch: UITouch, translation: Point3D)
     var strokeColor: UIColor { get set }
     func removeFromParent()
@@ -56,12 +56,12 @@ class GameScene: SKScene {
         self.selectedNode = touchedNode.selectNode(oldSelected: self.selectedNode)
         
         if StateMachine.state == .morfing,
-            let compodeMode = self.selectedNode as? CompodeNode  {
+            let compodeMode = self.selectedNode as? ComposeNode  {
             selectNodeForMorfing(node: compodeMode)
         }
     }
     
-    func selectNodeForMorfing(node: CompodeNode) {
+    func selectNodeForMorfing(node: ComposeNode) {
         guard var manager = morfingManager else { return }
         
         if manager.start == nil {

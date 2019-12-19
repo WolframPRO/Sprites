@@ -16,13 +16,32 @@ extension CGPoint {
     }
 }
 
-struct Point3D {
+class Point3D: NSObject, NSCoding  {
+    init(x: CGFloat, y: CGFloat, z: CGFloat) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(Float(x), forKey: "x")
+        coder.encode(Float(y), forKey: "y")
+        coder.encode(Float(z), forKey: "z")
+    }
+    
+    convenience required init?(coder: NSCoder) {
+        let x2 = CGFloat(coder.decodeFloat(forKey: "x"))
+        let y2 = CGFloat(coder.decodeFloat(forKey: "y"))
+        let z2 = CGFloat(coder.decodeFloat(forKey: "z"))
+        self.init(x: x2, y: y2, z: z2)
+    }
+    
     var x: CGFloat
     var y: CGFloat
     var z: CGFloat
     
     func toPoint2D() -> Point2D {
-        return Point2D(x: x, y: y)
+        return Point2D(x: CGFloat(x), y: CGFloat(y))
     }
 }
 

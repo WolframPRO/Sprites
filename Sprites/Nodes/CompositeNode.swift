@@ -8,9 +8,35 @@
 
 import SpriteKit
 
-class CompodeNode: TranslationNodeProtocol {
+class ComposeNode: NSObject, TranslationNodeProtocol, NSCoding {
+    
+    var justTry: [CGFloat] = []
+    var justTry2: [Point3D] = []
     
     var nodes: [LineNode] = []
+    
+    func encode(with coder: NSCoder) {
+        let ns = NSArray(array: nodes)
+        coder.encode(ns, forKey: "nodes")
+        
+        let waawdawd: [CGFloat] = [1.0 , 2.0]
+        coder.encode(waawdawd, forKey: "justTry")
+        
+        let addwawd: [Point3D] = [Point3D(x: 1, y: 2, z: 3), Point3D(x: 4, y: 5, z: 6)]
+        coder.encode(addwawd, forKey: "justTry2")
+
+    }
+    
+    convenience required init?(coder: NSCoder) {
+        let lines = coder.decodeObject(of: [NSArray.self], forKey: "nodes")
+
+        self.init()
+
+        if let strongLines = lines,
+            let typed = strongLines as? [LineNode] {
+            nodes = typed
+        }
+    }
     
     func selectNode(oldSelected: TranslationNodeProtocol?) -> TranslationNodeProtocol {
         Radio.postNodeHaveParent()
@@ -20,7 +46,7 @@ class CompodeNode: TranslationNodeProtocol {
     func add(node: LineNode) {
         weak var weakSelf = self
         node.parentNode = weakSelf
-        nodes.append(node)
+        self.nodes.append(node)
     }
     
     func removeAll() {

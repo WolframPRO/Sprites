@@ -31,14 +31,18 @@ extension GameScene {
         let end = CGPoint(x: Int.random(in: -100...100), y: Int.random(in: -100...100))
         let line = LineNode(start: start.toPoint3D(), end: end.toPoint3D())
         self.addChild(line)
+        
+        RestoreManager.shared.add(line: line)
     }
     
     public func removeNode() -> Bool {
-        guard selectedNode != nil else {
-            return false
-        }
+        guard selectedNode != nil else { return false }
+        
+        RestoreManager.shared.remove(line: selectedNode!)
+        
         selectedNode!.removeFromParent()
         selectedNode = nil
+        
         return true
     }
     
@@ -64,12 +68,14 @@ extension GameScene {
         guard let selectedNode = selectedNode else { return }
         
         switch selectedNode {
-        case let node as CompodeNode:
+        case let node as ComposeNode:
             node.removeAll()
             self.selectedNode?.strokeColor = .blue
             self.selectedNode = nil
         default:
             return
         }
+        
+        RestoreManager.shared.store()
     }
 }

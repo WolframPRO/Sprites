@@ -21,12 +21,14 @@ class GameViewController: UIViewController {
     @IBOutlet weak var lockSwitch: UISwitch!
     @IBOutlet weak var zField: UITextField!
     @IBOutlet weak var selectedPointSwitcher: UISegmentedControl!
-    @IBOutlet weak var morfingPicker: UIPickerView!
+    @IBOutlet weak var morfingSlider: UISlider!
+    
+    var oldSelected = 0
     
 	var scene: GameScene!
     var isMorfingMode: Bool = false {
         didSet {
-            contentHeight.constant = isMorfingMode ? 596 : 180
+//            contentHeight.constant = isMorfingMode ? 220 : 180
             UIView.animate(withDuration: 0.25) {
                 self.view.layoutIfNeeded()
             }
@@ -72,6 +74,7 @@ class GameViewController: UIViewController {
         Radio.Subscribe.fxLine { (text) in
             self.lineDefLabel.text = text
         }
+        RestoreManager.shared.add(to: scene)
     }
     
     func fillSelectedPointLabel(start: Point3D, end: Point3D) {
@@ -142,28 +145,10 @@ class GameViewController: UIViewController {
         }
         sender.alpha = 1.0
         sender.isUserInteractionEnabled = true
-        morfingPicker.alpha = 1.0
-        morfingPicker.isUserInteractionEnabled = true
+        morfingSlider.alpha = isMorfingMode ? 1.0 : 0.5
+        morfingSlider.isUserInteractionEnabled = isMorfingMode
     }
-}
-
-
-extension GameViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        100
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        "\(row+1)"
-    }
-}
-
-extension GameViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        Radio.post(morfingValue: row+1)
+    @IBAction func valueChanged(_ sender: UISlider) {
+        Radio.post(morfingValue: Int(sender.value))
     }
 }
