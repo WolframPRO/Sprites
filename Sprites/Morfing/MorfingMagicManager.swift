@@ -86,8 +86,8 @@ class MorfingMagicManager {
     }
     
     func magic(_ percent: CGFloat) throws {
-        guard percent < 1 else { throw MorfingError.percentGreatherThanOne }
-        guard percent > 0 else { throw MorfingError.percentLessThanZero }
+        guard percent <= 1 else { throw MorfingError.percentGreatherThanOne }
+        guard percent >= 0 else { throw MorfingError.percentLessThanZero }
         
         try balance()
         
@@ -100,8 +100,8 @@ class MorfingMagicManager {
             let startNode = start.nodes[$0.offset]
             let endNode = end.nodes[$0.offset]
             
-            let startPoint = makeMagic(first: startNodeBalanced.start, last: endNode.start, percent: percent)
-            let endPoint = makeMagic(first: startNodeBalanced.end, last: endNode.end, percent: percent)
+            let startPoint = self.makeMagic(first: startNodeBalanced.start, last: endNode.start, percent: percent)
+            let endPoint = self.makeMagic(first: startNodeBalanced.end, last: endNode.end, percent: percent)
             
             startNode.setLine(start: startPoint, end: endPoint)
         }
@@ -115,6 +115,6 @@ class MorfingMagicManager {
     }
     
     private func makeMagic(first: CGFloat, last: CGFloat, percent: CGFloat) -> CGFloat {
-        return first * percent + last * (1-percent)
+        return first * (1-percent) + last * percent
     }
 }

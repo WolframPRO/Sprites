@@ -26,7 +26,7 @@ class GameViewController: UIViewController {
 	var scene: GameScene!
     var isMorfingMode: Bool = false {
         didSet {
-            contentHeight.constant = isMorfingMode ? 766 : 350
+            contentHeight.constant = isMorfingMode ? 596 : 180
             UIView.animate(withDuration: 0.25) {
                 self.view.layoutIfNeeded()
             }
